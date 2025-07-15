@@ -1,0 +1,72 @@
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: com.vertispan.recipes.GrpcForGwt
+recipeList:
+  - com.vertispan.recipes.RemoveClassInternals:
+      fullyQualifiedClassName: io.grpc.stub.AbstractBlockingStub
+  - com.vertispan.recipes.RemoveClassInternals:
+      fullyQualifiedClassName: io.grpc.stub.AbstractFutureStub
+
+  - com.vertispan.recipes.RemoveClassInternals:
+      fullyQualifiedClassName: io.grpc.stub.ServerCalls
+
+  - com.vertispan.recipes.MethodThrowsException:
+      target: io.grpc.stub.ClientCalls blockingUnaryCall(..)
+  - com.vertispan.recipes.MethodThrowsException:
+      target: io.grpc.stub.ClientCalls blockingServerStreamingCall(..)
+  - com.vertispan.recipes.MethodThrowsException:
+      target: io.grpc.stub.ClientCalls futureUnaryCall(..)
+
+  # Remove this annotation, so the Grpc class itself can be pruned by the build
+  - org.openrewrite.java.RemoveAnnotation:
+      annotationPattern: '@io.grpc.Grpc.TransportAttr'
+
+  - org.openrewrite.java.ReplaceConstantWithAnotherConstant:
+      existingFullyQualifiedConstantName: com.google.common.base.Charsets.US_ASCII
+      fullyQualifiedConstantName: com.google.common.base.Charsets.UTF_8
+
+  - com.vertispan.recipes.EliminateUnreachableTypes:
+      entrypointTypes:
+        - io.grpc.MethodDescriptor
+        - io.grpc.ServiceDescriptor
+        - io.grpc.BindableService
+        - io.grpc.stub.AbstractStub
+        - io.grpc.stub.AbstractAsyncStub
+        - io.grpc.stub.AbstractBlockingStub
+        - io.grpc.stub.AbstractFutureStub
+        - io.grpc.stub.ServerCalls
+        - io.grpc.stub.annotations.RpcMethod
+        - io.grpc.stub.annotations.GrpcGenerated
+        - io.grpc.protobuf.ProtoUtils
+        - io.grpc.protobuf.ProtoFileDescriptorSupplier
+        - io.grpc.protobuf.ProtoMethodDescriptorSupplier
+        - io.grpc.protobuf.ProtoServiceDescriptorSupplier
+  #        - io.grpc.internal.ClientCallImpl # necessary?
+
+  - org.openrewrite.java.RemoveUnusedImports
+
+  - org.openrewrite.java.ReplaceMethodInvocationWithConstant:
+      methodPattern: java.lang.System getenv(..)
+      replacement: '"true"' # "false" or null to enable check
+
+  - com.vertispan.recipes.StringFormatToConcat
+
+  - com.vertispan.recipes.RemoveMethod:
+      target: io.grpc.stub.ClientCalls getUnchecked(..)
+
+  - com.vertispan.recipes.guava.ReplaceGetStackTraceAsString
+  - org.openrewrite.java.DeleteMethodArgument:
+      methodPattern: java.lang.String <constructor>(byte[],int)
+      argumentIndex: 1
+
+  # Remove this overload, then we can also remove LazyValue and a marshaller runtime type check
+  - com.vertispan.recipes.RemoveMethod:
+      target: io.grpc.Metadata.Key of(java.lang.String,io.grpc.Metadata.BinaryStreamMarshaller)
+  - com.vertispan.recipes.RemoveClassInternals:
+      fullyQualifiedClassName: io.grpc.Metadata$LazyValue
+  - com.vertispan.recipes.RemoveMethod:
+      target: io.grpc.Metadata.Key getMarshaller(..)
+
+  - org.openrewrite.java.ChangeMethodTargetToStatic:
+      methodPattern: java.nio.ByteBuffer wrap(..)
+      fullyQualifiedTargetTypeName: com.google.protobuf.gwt.StaticImpls

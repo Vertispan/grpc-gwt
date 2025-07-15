@@ -1,0 +1,4 @@
+# The OpenRewrite maven plugin insists on rewriting sources in src/, but we don't want to commit the unpacked
+# and modified sources, since no manual changes are required. As a result, we just ignore everything in the
+# src/main/java directory.
+*

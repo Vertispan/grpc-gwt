@@ -1,0 +1,6 @@
+<module>
+    <inherits name="com.google.common.base.Base" />
+    <inherits name="com.google.common.io.Io" />
+    <inherits name="com.google.rpc.CommonProtos" />
+    <source path="" />
+</module>
