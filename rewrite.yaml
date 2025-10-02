@@ -41,6 +41,7 @@ recipeList:
         - io.grpc.protobuf.ProtoFileDescriptorSupplier
         - io.grpc.protobuf.ProtoMethodDescriptorSupplier
         - io.grpc.protobuf.ProtoServiceDescriptorSupplier
+        - io.grpc.InternalMetadata
   #        - io.grpc.internal.ClientCallImpl # necessary?
 
   - org.openrewrite.java.RemoveUnusedImports
@@ -70,3 +71,7 @@ recipeList:
   - org.openrewrite.java.ChangeMethodTargetToStatic:
       methodPattern: java.nio.ByteBuffer wrap(..)
       fullyQualifiedTargetTypeName: com.google.protobuf.gwt.StaticImpls
+
+  - com.vertispan.recipes.RemoveField:
+      fullyQualifiedClassName: io.grpc.InternalMetadata
+      fieldName: US_ASCII
