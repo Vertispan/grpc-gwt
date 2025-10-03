@@ -52,16 +52,27 @@ For these reasons, other gRPC clients such as (improbable-eng/grpc-web)[https://
 have included a websocket transport for gRPC messages. Unfortunately, that repository is no longer maintained, and some
 features we have found to be necessary were never shipped or never implemented.
 
-This library includes two websocket transports - the first is compatible with improbable-eng/grpc-web using one
+A simple `fetch()` implementation is provided which supports unary and server-streaming calls, but by itself cannot
+support other streaming calls.
+
+### Unfinished transports
+This library will include two websocket transports - the first is compatible with improbable-eng/grpc-web using one
 websocket per stream, and the second supports using a single websocket for multiple streams to the same server (in 
 roughly the same way that http2 would do with streams on a single socket). The first is included for compatibility with
 any existing proxies that support this feature - we mostly encourage the use of the second where required.
 
+Another implementation will be provided that uses server-streaming `fetch()` requests to receive messages for a given
+stream, and a unary `fetch()` to send messages. These can be paired with a server-side tools to modify a Java 
+`BindableService` to include pairs of gRPC methods which will be treated by the real server method as a single streaming
+method. Some implementation details are likely to be left out, specifically around handling the state of pairing up
+messages etc, and naturally any reverse proxy would be required to forward all calls to the same server to be handled
+uniformly.
+
 ## Usage
 
-Add `com.vertispan.protobuf:protobuf-gwt` to your project dependencies. The version will be based on the
-protobuf-java build being used, with an integer suffix to allow for packaging changes. For example, current
-released versions:
+Add `com.vertispan.grpc:grpc-web-gwt` to your project dependencies, replacing `io.grpc:grpc-*` dependencies.  The
+version will be based on the grpc-java build being used, with an integer suffix to allow for packaging changes. For
+example, current released versions:
 
 | grpc-java | grpc-gwt | Description                                                              |
 |-----------|----------|--------------------------------------------------------------------------|
@@ -72,7 +83,11 @@ Replace/exclude any existing grpc-java dependencies with this library. Add an in
 <inherits name="io.grpc.Grpc" />
 ```
 
-Then, use the gRPC APIs as you would normally. The gRPC-web Channel is available as `GrpcWebChannel` in the
+Then, generate your own stubs as normal with protoc, taking care to only use the async stubs.
+
+Additionally, one or more `io.grpc.Channel` implementation should be picked from the provided dependencies, and passed to
+the `newStub(..)` method when creating your generated client service.
+
 
 ## Building
 
