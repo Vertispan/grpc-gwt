@@ -42,7 +42,11 @@ recipeList:
         - io.grpc.protobuf.ProtoMethodDescriptorSupplier
         - io.grpc.protobuf.ProtoServiceDescriptorSupplier
         - io.grpc.InternalMetadata
-  #        - io.grpc.internal.ClientCallImpl # necessary?
+        - io.grpc.InternalStatus
+        - io.grpc.ForwardingClientCall
+        - io.grpc.ForwardingClientCall$SimpleForwardingClientCall
+        - io.grpc.ForwardingClientCallListener
+        - io.grpc.ForwardingClientCallListener$SimpleForwardingClientCallListener
 
   - org.openrewrite.java.RemoveUnusedImports
 
