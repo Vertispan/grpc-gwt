@@ -1,4 +1,4 @@
-# grpc-gwt
+# grpc-web-gwt
 
 gRPC-web support for GWT/J2CL projects - starts with the basic gRPC APIs and stubs, and provides both replacements for
 those jars, plus gRPC/gRPC-web Channel implementations.
@@ -68,6 +68,12 @@ method. Some implementation details are likely to be left out, specifically arou
 messages etc, and naturally any reverse proxy would be required to forward all calls to the same server to be handled
 uniformly.
 
+### Not a browser?
+Technically, a Channel implementation can be written for non-browser clients with better h2 support, and that will be
+gRPC proper, rather than gRPC-web. Node.js for example has a serviceable h2 implementation that can be used in Electron
+apps or server side - it additionally supports bidirectional streaming, so a Channel implementation will be easier to
+provide without any workarounds. At this time, this project does not provide one.
+
 ## Usage
 
 Add `com.vertispan.grpc:grpc-web-gwt` to your project dependencies, replacing `io.grpc:grpc-*` dependencies.  The
@@ -91,5 +97,6 @@ the `newStub(..)` method when creating your generated client service.
 
 ## Building
 
-This can be built simply with `mvn install`.
+This can be built simply with `mvn install`. The `clean` goal will remove the generated sources, so when changing rewrite
+rules or grpc versions, a `mvn clean install` may be required.
 
