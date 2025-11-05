@@ -76,7 +76,7 @@ provide without any workarounds. At this time, this project does not provide one
 
 ## Usage
 
-Add `com.vertispan.grpc:grpc-web-gwt` to your project dependencies, replacing `io.grpc:grpc-*` dependencies.  The
+Add `com.vertispan.grpc:grpc-gwt` to your project dependencies, replacing `io.grpc:grpc-*` dependencies.  The
 version will be based on the grpc-java build being used, with an integer suffix to allow for packaging changes. For
 example, current released versions:
 
@@ -94,6 +94,14 @@ Then, generate your own stubs as normal with protoc, taking care to only use the
 Additionally, one or more `io.grpc.Channel` implementation should be picked from the provided dependencies, and passed to
 the `newStub(..)` method when creating your generated client service.
 
+#### grpc-web-gwt-fetch
+A `Channel` implementation that uses the browser's `fetch()` API to make requests. This supports unary and server-streaming
+calls.
+
+Add `com.vertispan.grpc:grpc-web-gwt-fetch` to your project dependencies. Then, add an inherits in your project's GWT module:
+```xml
+<inherits name="com.vertispan.grpc.fetch.Fetch" />
+```
 
 ## Building
 

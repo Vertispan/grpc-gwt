@@ -5,13 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.vertispan.grpc</groupId>
-    <artifactId>grpc-web-gwt</artifactId>
-    <version>1.63.1-1-SNAPSHOT</version>
-    <packaging>gwt-lib</packaging>
+    <artifactId>grpc-web-gwt-parent</artifactId>
+    <version>HEAD-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
     <properties>
-        <grpc.version>1.63.1</grpc.version>
-
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -32,167 +30,19 @@
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
+
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava-gwt</artifactId>
+                <version>33.4.0-jre</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.vertispan.protobuf</groupId>
-            <artifactId>protobuf-gwt</artifactId>
-            <version>3.25.4-2</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava-gwt</artifactId>
-            <version>33.4.0-jre</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.api.grpc</groupId>
-            <artifactId>proto-google-common-protos</artifactId>
-            <version>2.29.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.api.grpc</groupId>
-            <artifactId>proto-google-common-protos</artifactId>
-            <version>2.29.0</version>
-            <classifier>sources</classifier>
-        </dependency>
-
-
-        <dependency>
-            <groupId>org.gwtproject</groupId>
-            <artifactId>gwt-dev</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.gwtproject</groupId>
-            <artifactId>gwt-user</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.2</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.8.1</version>
-                <executions>
-                    <execution>
-                        <id>unpack</id>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>io.grpc</groupId>
-                                    <artifactId>grpc-api</artifactId>
-                                    <version>${grpc.version}</version>
-                                    <type>jar</type>
-                                    <classifier>sources</classifier>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>io.grpc</groupId>
-                                    <artifactId>grpc-stub</artifactId>
-                                    <version>${grpc.version}</version>
-                                    <type>jar</type>
-                                    <classifier>sources</classifier>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>io.grpc</groupId>
-                                    <artifactId>grpc-protobuf</artifactId>
-                                    <version>${grpc.version}</version>
-                                    <type>jar</type>
-                                    <classifier>sources</classifier>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>io.grpc</groupId>
-                                    <artifactId>grpc-protobuf-lite</artifactId>
-                                    <version>${grpc.version}</version>
-                                    <type>jar</type>
-                                    <classifier>sources</classifier>
-                                </artifactItem>
-                            </artifactItems>
-                            <outputDirectory>src/main/java</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.openrewrite.maven</groupId>
-                <artifactId>rewrite-maven-plugin</artifactId>
-                <version>6.8.0</version>
-                <executions>
-                    <execution>
-                        <id>rewrite</id>
-                        <phase>process-sources</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <runPerSubmodule>true</runPerSubmodule>
-                    <activeRecipes>
-                        <recipe>com.vertispan.recipes.GrpcForGwt</recipe>
-                    </activeRecipes>
-                    <configLocation>${maven.multiModuleProjectDirectory}/rewrite.yaml</configLocation>
-                    <exclusions>
-                        <exclusion>**/src/test/**</exclusion>
-                    </exclusions>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.vertispan.recipes</groupId>
-                        <artifactId>gwt-compatible-recipes</artifactId>
-                        <version>2.0</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-            <plugin>
-                <groupId>net.ltgt.gwt.maven</groupId>
-                <artifactId>gwt-maven-plugin</artifactId>
-                <version>${maven.gwt.plugin}</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <moduleName>io.grpc.Grpc</moduleName>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-clean-plugin</artifactId>
-                <version>3.4.1</version>
-                <configuration>
-                    <!-- Also configure the plugin to remove the unpacked+rewritten sources -->
-                    <filesets>
-                        <fileset>
-                            <directory>src/main/java</directory>
-                            <includes>
-                                <include>io/</include>
-                                <include>META-INF/</include>
-                            </includes>
-                        </fileset>
-                    </filesets>
-                </configuration>
-            </plugin>
-
-        </plugins>
-    </build>
-
-    <!--    <modules>-->
-<!--        <module>grpc-web-gwt</module>-->
-<!--        <module>grpc-web-gwt</module>-->
-<!--    </modules>-->
+    <modules>
+        <module>grpc-gwt</module>
+        <module>grpc-web-gwt-fetch</module>
+    </modules>
     <profiles>
         <!-- release profile to create sources, javadoc, and sign all artifacts before uploading -->
         <profile>
@@ -247,5 +97,4 @@
             </build>
         </profile>
     </profiles>
-
 </project>
