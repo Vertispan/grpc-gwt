@@ -11,7 +11,7 @@
 
     <artifactId>grpc-web-gwt-fetch</artifactId>
     <packaging>gwt-lib</packaging>
-    <version>HEAD-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>gRPC-web fetch() implementation</name>
     <description>
         A gRPC Channel implementation for gRPC-web that uses the browser fetch() API to make requests.
@@ -27,7 +27,7 @@
         <dependency>
             <groupId>com.vertispan.grpc</groupId>
             <artifactId>grpc-gwt</artifactId>
-            <version>1.63.1-1-SNAPSHOT</version>
+            <version>1.63.1-1</version>
         </dependency>
 
         <dependency>

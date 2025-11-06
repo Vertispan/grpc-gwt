@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>grpc-gwt</artifactId>
-    <version>1.63.1-1-SNAPSHOT</version>
+    <version>1.63.1-1</version>
     <packaging>gwt-lib</packaging>
     <name>gRPC for GWT</name>
     <description>
