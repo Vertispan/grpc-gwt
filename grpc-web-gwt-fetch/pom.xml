@@ -11,7 +11,7 @@
 
     <artifactId>grpc-web-gwt-fetch</artifactId>
     <packaging>gwt-lib</packaging>
-
+    <version>HEAD-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
