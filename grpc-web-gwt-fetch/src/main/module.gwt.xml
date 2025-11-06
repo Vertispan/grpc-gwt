@@ -1,4 +1,5 @@
 <module>
+    <inherits name="elemental2.dom.Dom" />
     <inherits name="io.grpc.Grpc" />
     <source path="" />
 </module>
