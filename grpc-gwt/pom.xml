@@ -12,6 +12,10 @@
     <artifactId>grpc-gwt</artifactId>
     <version>1.63.1-1-SNAPSHOT</version>
     <packaging>gwt-lib</packaging>
+    <name>gRPC for GWT</name>
+    <description>
+        A GWT compatible version of a subset of gRPC-java's api, stub, and protobuf artifacts
+    </description>
 
     <properties>
         <grpc.version>1.63.1</grpc.version>

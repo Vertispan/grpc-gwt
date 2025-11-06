@@ -12,6 +12,10 @@
     <artifactId>grpc-web-gwt-fetch</artifactId>
     <packaging>gwt-lib</packaging>
     <version>HEAD-SNAPSHOT</version>
+    <name>gRPC-web fetch() implementation</name>
+    <description>
+        A gRPC Channel implementation for gRPC-web that uses the browser fetch() API to make requests.
+    </description>
 
     <dependencies>
         <dependency>

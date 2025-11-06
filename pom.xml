@@ -8,6 +8,36 @@
     <artifactId>grpc-web-gwt-parent</artifactId>
     <version>HEAD-SNAPSHOT</version>
     <packaging>pom</packaging>
+    <url>https://github.com/vertispan/grpc-gwt/</url>
+
+    <organization>
+        <name>Vertispan</name>
+        <url>https://www.vertispan.com/</url>
+    </organization>
+
+    <inceptionYear>2025</inceptionYear>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Colin Alworth</name>
+            <email>colin@vertispan.com</email>
+            <organization>Vertispan LLC</organization>
+            <organizationUrl>https://vertispan.com/</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/vertispan/grpc-gwt.git</connection>
+        <developerConnection>scm:git:ssh://github.com/vertispan/grpc-gwt.git</developerConnection>
+        <url>https://github.com/vertispan/grpc-gwt/tree/main</url>
+    </scm>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -71,6 +101,18 @@
             <id>release</id>
             <build>
                 <plugins>
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>0.8.0</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <publishingServerId>central</publishingServerId>
+                            <excludeArtifacts>
+                                <excludeArtifact>grpc-web-gwt-parent</excludeArtifact>
+                            </excludeArtifacts>
+                        </configuration>
+                    </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
