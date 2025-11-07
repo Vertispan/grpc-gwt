@@ -35,7 +35,7 @@
         <dependency>
             <groupId>com.vertispan.protobuf</groupId>
             <artifactId>protobuf-gwt</artifactId>
-            <version>3.25.4-2</version>
+            <version>3.25.4-3</version>
         </dependency>
 
         <dependency>
