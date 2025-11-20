@@ -2,6 +2,7 @@ package com.vertispan.grpc.fetch;
 
 
 import com.google.common.io.BaseEncoding;
+import com.google.common.util.concurrent.MoreExecutors;
 import elemental2.core.DataView;
 import elemental2.core.JsIIterableResult;
 import elemental2.core.JsIteratorIterable;
@@ -20,6 +21,7 @@ import io.grpc.CallCredentials;
 import io.grpc.CallOptions;
 import io.grpc.Channel;
 import io.grpc.ClientCall;
+import io.grpc.Context;
 import io.grpc.Drainable;
 import io.grpc.InternalMetadata;
 import io.grpc.InternalStatus;
@@ -104,8 +106,9 @@ public class FetchChannel extends Channel {
             });
         }
 
-        return new ClientCall<>() {
+        ClientCall<RequestT, ResponseT> call = new ClientCall<>() {
             private final AbortController abortController = new AbortController();
+
             private final RequestInit init = RequestInit.create();
             private final URL url = new URL(server);
 
@@ -262,6 +265,12 @@ public class FetchChannel extends Channel {
                 });
             }
         };
+        Context.current().addListener(context -> {
+            Throwable cause = context.cancellationCause();
+            call.cancel(cause != null ? cause.getMessage() : null, cause);
+        }, MoreExecutors.directExecutor());
+
+        return call;
     }
 
     private static Status getStatus(final Metadata latest, final Metadata fallback, final Response response, final String description) {

@@ -47,6 +47,8 @@ recipeList:
         - io.grpc.ForwardingClientCall$SimpleForwardingClientCall
         - io.grpc.ForwardingClientCallListener
         - io.grpc.ForwardingClientCallListener$SimpleForwardingClientCallListener
+        - io.grpc.Context
+        - io.grpc.ThreadLocalContextStorage
 
   - org.openrewrite.java.RemoveUnusedImports
 
@@ -79,3 +81,8 @@ recipeList:
   - com.vertispan.recipes.RemoveField:
       fullyQualifiedClassName: io.grpc.InternalMetadata
       fieldName: US_ASCII
+  - org.openrewrite.java.ReplaceMethodInvocationWithConstant:
+      methodPattern: io.grpc.Context$LazyStorage createStorage(..)
+      replacement: new io.grpc.ThreadLocalContextStorage()
+  - com.vertispan.recipes.RemoveMethod:
+      target: io.grpc.Context$LazyStorage createStorage(..)

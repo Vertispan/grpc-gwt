@@ -80,9 +80,10 @@ Add `com.vertispan.grpc:grpc-gwt` to your project dependencies, replacing `io.gr
 version will be based on the grpc-java build being used, with an integer suffix to allow for packaging changes. For
 example, current released versions:
 
-| grpc-java | grpc-gwt | Description                                                              |
-|-----------|----------|--------------------------------------------------------------------------|
-| 1.63.1    | 1.63.1-1 | Initial release                                                          |
+| grpc-java | grpc-gwt | Description                                                                            |
+|-----------|----------|----------------------------------------------------------------------------------------|
+| 1.63.1    | 1.63.1-1 | Initial release                                                                        |
+| 1.63.1    | 1.63.1-2 | Add support for canceling server streaming calls via Context, some missing super-source |
 
 Replace/exclude any existing grpc-java dependencies with this library. Add an inherits in your project's GWT module:
 ```xml

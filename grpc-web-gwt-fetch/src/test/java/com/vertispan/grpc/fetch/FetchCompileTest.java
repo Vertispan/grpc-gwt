@@ -2,6 +2,7 @@ package com.vertispan.grpc.fetch;
 
 import com.google.gwt.junit.client.GWTTestCase;
 import elemental2.dom.URL;
+import io.grpc.Context;
 
 public class FetchCompileTest extends GWTTestCase {
     @Override
@@ -14,5 +15,9 @@ public class FetchCompileTest extends GWTTestCase {
         // compiles, with other bits of gRPC along with it
         FetchChannel channel = new FetchChannel(new URL("https://localhost:8080"));
         assertEquals("localhost:8080", channel.authority());
+    }
+
+    public void testContext() {
+        Context.current().withCancellation().cancel(null);
     }
 }
