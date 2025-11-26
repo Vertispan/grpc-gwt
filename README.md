@@ -80,9 +80,9 @@ Add `com.vertispan.grpc:grpc-gwt` to your project dependencies, replacing `io.gr
 version will be based on the grpc-java build being used, with an integer suffix to allow for packaging changes. For
 example, current released versions:
 
-| grpc-java | grpc-gwt | Description                                                                            |
-|-----------|----------|----------------------------------------------------------------------------------------|
-| 1.63.1    | 1.63.1-1 | Initial release                                                                        |
+| grpc-java | grpc-gwt | Description                                                                             |
+|-----------|----------|-----------------------------------------------------------------------------------------|
+| 1.63.1    | 1.63.1-1 | Initial release                                                                         |
 | 1.63.1    | 1.63.1-2 | Add support for canceling server streaming calls via Context, some missing super-source |
 
 Replace/exclude any existing grpc-java dependencies with this library. Add an inherits in your project's GWT module:
@@ -103,6 +103,14 @@ Add `com.vertispan.grpc:grpc-web-gwt-fetch` to your project dependencies. Then, 
 ```xml
 <inherits name="com.vertispan.grpc.fetch.Fetch" />
 ```
+
+Releases:
+
+| grpc-web-gwt-fetch | Description                          |
+|--------------------|--------------------------------------|
+| 1.0.0              | Initial release                      |
+| 1.0.1              | Add support for Context cancellation |
+| 1.1.0              | Update to elemental2-dom 1.3.2       |
 
 ## Building
 
