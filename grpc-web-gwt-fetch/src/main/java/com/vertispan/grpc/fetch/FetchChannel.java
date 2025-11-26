@@ -349,7 +349,7 @@ public class FetchChannel extends Channel {
 
     private Metadata makeMetadata(final Headers headers) {
         final Metadata result = new Metadata();
-        final JsIteratorIterable<String> keys = headers.keys();
+        final JsIteratorIterable<String, Object, Object> keys = headers.keys();
         JsIIterableResult<String> next = keys.next();
         while (!next.isDone()) {
             final String key = next.getValue();
