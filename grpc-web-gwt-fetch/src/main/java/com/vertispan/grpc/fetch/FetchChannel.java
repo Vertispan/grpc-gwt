@@ -394,8 +394,8 @@ public class FetchChannel extends Channel {
                 @Override
                 public void write(final byte[] b, final int off, final int len) {
                     final Uint8Array e = new Uint8Array(len);
-                    for (int i = off; i < len; i++) {
-                        e.setAt(i, (double) b[i]);
+                    for (int i = 0; i < len; i++) {
+                        e.setAt(i, (double) b[off + i]);
                     }
                     result.add(e);
                 }
