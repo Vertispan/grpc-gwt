@@ -10,20 +10,27 @@ recipeList:
   - com.vertispan.recipes.RemoveClassInternals:
       fullyQualifiedClassName: io.grpc.stub.ServerCalls
 
+  - com.vertispan.recipes.RemoveClassInternals:
+      fullyQualifiedClassName: io.grpc.stub.BlockingClientCall
+  - com.vertispan.recipes.RemoveMethod:
+      target: io.grpc.stub.BlockingClientCall <constructor>(..)
+
   - com.vertispan.recipes.MethodThrowsException:
       target: io.grpc.stub.ClientCalls blockingUnaryCall(..)
   - com.vertispan.recipes.MethodThrowsException:
       target: io.grpc.stub.ClientCalls blockingServerStreamingCall(..)
   - com.vertispan.recipes.MethodThrowsException:
       target: io.grpc.stub.ClientCalls futureUnaryCall(..)
+  - com.vertispan.recipes.MethodThrowsException:
+      target: io.grpc.stub.ClientCalls blockingBidiStreamingCall(..)
 
   # Remove this annotation, so the Grpc class itself can be pruned by the build
   - org.openrewrite.java.RemoveAnnotation:
       annotationPattern: '@io.grpc.Grpc.TransportAttr'
 
   - org.openrewrite.java.ReplaceConstantWithAnotherConstant:
-      existingFullyQualifiedConstantName: com.google.common.base.Charsets.US_ASCII
-      fullyQualifiedConstantName: com.google.common.base.Charsets.UTF_8
+      existingFullyQualifiedConstantName: java.nio.charset.StandardCharsets.US_ASCII
+      fullyQualifiedConstantName: java.nio.charset.StandardCharsets.UTF_8
 
   - com.vertispan.recipes.EliminateUnreachableTypes:
       entrypointTypes:
@@ -86,3 +93,8 @@ recipeList:
       replacement: new io.grpc.ThreadLocalContextStorage()
   - com.vertispan.recipes.RemoveMethod:
       target: io.grpc.Context$LazyStorage createStorage(..)
+
+  - com.vertispan.recipes.RemoveMethod:
+      target: io.grpc.stub.AbstractStub withDeadlineAfter(java.time.Duration)
+  - com.vertispan.recipes.RemoveMethod:
+      target: io.grpc.CallOptions withDeadlineAfter(java.time.Duration)

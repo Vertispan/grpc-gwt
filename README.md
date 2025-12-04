@@ -84,6 +84,7 @@ example, current released versions:
 |-----------|----------|-----------------------------------------------------------------------------------------|
 | 1.63.1    | 1.63.1-1 | Initial release                                                                         |
 | 1.63.1    | 1.63.1-2 | Add support for canceling server streaming calls via Context, some missing super-source |
+| 1.76.2    | 1.76.2-1 | Update to gRPC 1.76.2                                                                   |
 
 Replace/exclude any existing grpc-java dependencies with this library. Add an inherits in your project's GWT module:
 ```xml

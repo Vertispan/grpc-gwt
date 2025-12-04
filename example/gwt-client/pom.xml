@@ -38,7 +38,7 @@
         <dependency>
             <groupId>com.vertispan.grpc</groupId>
             <artifactId>grpc-gwt</artifactId>
-            <version>1.63.1-2</version>
+            <version>1.76.2-1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.vertispan.grpc</groupId>
