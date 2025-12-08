@@ -1,0 +1,17 @@
+
+services:
+  envoy:
+    image: envoyproxy/envoy:v1.27-latest
+    ports:
+      - '8080:8000'
+      - '9090:9090'
+    volumes:
+      - ./envoy.yaml:/etc/envoy/envoy.yaml
+  python-server:
+    build:
+      context: .
+    expose:
+      - '8080'
+    volumes:
+      - ./src:/usr/src/app
+    entrypoint: python server.py

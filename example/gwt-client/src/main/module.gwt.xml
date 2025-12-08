@@ -1,0 +1,12 @@
+<module>
+    <inherits name="io.grpc.Grpc" />
+    <inherits name="com.google.protobuf.ProtocolBuffers" />
+    <inherits name="com.google.gwt.logging.Logging"/>
+
+    <source path="" />
+    <super-source path="super" />
+    <entry-point class="helloworld.HelloClient" />
+
+    <set-property name="gwt.logging.logLevel" value="FINE"/>
+    <set-property name="jre.logging.logLevel" value="ALL"/>
+</module>
