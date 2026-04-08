@@ -5,6 +5,10 @@ import com.vertispan.grpc.fetch.FetchChannel;
 import elemental2.dom.DomGlobal;
 import elemental2.dom.HTMLTextAreaElement;
 import elemental2.dom.URL;
+import io.grpc.ClientInterceptor;
+import io.grpc.ClientInterceptors;
+import io.grpc.Metadata;
+import io.grpc.stub.MetadataUtils;
 import io.grpc.stub.StreamObserver;
 
 public class HelloClient implements EntryPoint {
@@ -16,7 +20,9 @@ public class HelloClient implements EntryPoint {
     }
 
     private void sendGreeting(String message) {
-        GreeterGrpc.newStub(channel)
+        ClientInterceptor clientInterceptor = MetadataUtils.newAttachHeadersInterceptor(new Metadata());
+
+        GreeterGrpc.newStub(ClientInterceptors.intercept(channel, clientInterceptor))
                 .sayHello(HelloRequest.newBuilder().setName(message).build(), new StreamObserver<HelloReply>() {
                     @Override
                     public void onNext(HelloReply value) {
