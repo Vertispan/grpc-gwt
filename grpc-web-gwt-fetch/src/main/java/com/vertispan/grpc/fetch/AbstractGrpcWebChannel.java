@@ -258,13 +258,19 @@ public abstract class AbstractGrpcWebChannel extends Channel {
     }
 
     private static Status getStatus(final Metadata latest, final Metadata fallback, final int httpStatus, final String description) {
-        Status status = latest.get(InternalStatus.CODE_KEY);
-        if (status != null) {
-            return status.withDescription(latest.get(InternalStatus.MESSAGE_KEY));
+        Status status;
+        if (latest != null) {
+            status = latest.get(InternalStatus.CODE_KEY);
+            if (status != null) {
+                return status.withDescription(latest.get(InternalStatus.MESSAGE_KEY));
+            }
         }
 
         if (fallback != null) {
-            return getStatus(fallback, null, httpStatus, description);
+            status = fallback.get(InternalStatus.CODE_KEY);
+            if (status != null) {
+                return status.withDescription(fallback.get(InternalStatus.MESSAGE_KEY));
+            }
         }
 
         status = grpcStatusFromHttpStatus(httpStatus);
