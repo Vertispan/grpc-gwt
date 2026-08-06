@@ -9,6 +9,7 @@ public class FetchSuite {
         GWTTestSuite suite = new GWTTestSuite("gRPC Fetch Emulation Tests");
 
         suite.addTestSuite(FetchCompileTest.class);
+        suite.addTestSuite(ByteBufferOutputStreamGwtTest.class);
 
         return suite;
     }
