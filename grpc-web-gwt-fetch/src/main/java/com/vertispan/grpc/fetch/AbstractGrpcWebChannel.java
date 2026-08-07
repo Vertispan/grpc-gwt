@@ -16,6 +16,7 @@ import io.grpc.Context;
 import io.grpc.Drainable;
 import io.grpc.InternalMetadata;
 import io.grpc.InternalStatus;
+import io.grpc.KnownLength;
 import io.grpc.Metadata;
 import io.grpc.MethodDescriptor;
 import io.grpc.SecurityLevel;
@@ -24,11 +25,12 @@ import jsinterop.base.JsPropertyMap;
 import org.gwtproject.nio.TypedArrayHelper;
 
 import javax.annotation.Nullable;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
@@ -369,25 +371,18 @@ public abstract class AbstractGrpcWebChannel extends Channel {
      * @param <RequestT> the request type
      */
     private static <RequestT> List<Uint8Array> frame(final RequestT message, final MethodDescriptor.Marshaller<RequestT> requestMarshaller) {
-        final List<Uint8Array> result = new ArrayList<>();
+        final List<Uint8Array> result;
         try (final InputStream stream = requestMarshaller.stream(message)) {
-            final Drainable drainable = (Drainable) stream;
-            drainable.drainTo(new OutputStream() {
-                @Override
-                public void write(final int b) {
-                    // TODO buffer this instead, for custom marshallers to write individual bytes
-                    write(new byte[]{(byte) b}, 0, 1);
-                }
-
-                @Override
-                public void write(final byte[] b, final int off, final int len) {
-                    final Uint8Array e = new Uint8Array(len);
-                    for (int i = 0; i < len; i++) {
-                        e.setAt(i, (double) b[off + i]);
-                    }
-                    result.add(e);
-                }
-            });
+            int length = getKnownLength(stream);
+            if (length == 0) {
+                result = new ArrayList<>();
+            } else {
+                final ByteBufferOutputStream bufferingStream = new ByteBufferOutputStream(length == -1 ? 4096 : length);
+                // TODO also support transferTo, when GWT does
+                final Drainable drainable = (Drainable) stream;
+                drainable.drainTo(bufferingStream);
+                result = bufferingStream.getBuffers();
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -399,6 +394,13 @@ public abstract class AbstractGrpcWebChannel extends Channel {
         new DataView(prefix.buffer).setUint32(1, sum, false);
         result.add(0, prefix);
         return result;
+    }
+
+    private static int getKnownLength(InputStream inputStream) throws IOException {
+        if (inputStream instanceof KnownLength || inputStream instanceof ByteArrayInputStream) {
+            return inputStream.available();
+        }
+        return -1;
     }
 
     private JsPropertyMap<String> makeHeaders(final Metadata metadata) {

@@ -4,6 +4,9 @@ import com.google.gwt.junit.client.GWTTestCase;
 import elemental2.dom.URL;
 import io.grpc.Context;
 
+/**
+ * Minimal browser-compilation smoke tests for the fetch channel and related runtime wiring.
+ */
 public class FetchCompileTest extends GWTTestCase {
     @Override
     public String getModuleName() {
