@@ -29,6 +29,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
@@ -372,11 +374,15 @@ public abstract class AbstractGrpcWebChannel extends Channel {
         final List<Uint8Array> result;
         try (final InputStream stream = requestMarshaller.stream(message)) {
             int length = getKnownLength(stream);
-            final ByteBufferOutputStream bufferingStream = new ByteBufferOutputStream(length == -1 ? 4096 : length);
-            // TODO also support transferTo, when GWT does
-            final Drainable drainable = (Drainable) stream;
-            drainable.drainTo(bufferingStream);
-            result = bufferingStream.getBuffers();
+            if (length == 0) {
+                result = new ArrayList<>();
+            } else {
+                final ByteBufferOutputStream bufferingStream = new ByteBufferOutputStream(length == -1 ? 4096 : length);
+                // TODO also support transferTo, when GWT does
+                final Drainable drainable = (Drainable) stream;
+                drainable.drainTo(bufferingStream);
+                result = bufferingStream.getBuffers();
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

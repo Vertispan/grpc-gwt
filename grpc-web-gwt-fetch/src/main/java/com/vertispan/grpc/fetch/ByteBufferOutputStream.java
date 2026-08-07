@@ -77,8 +77,7 @@ public class ByteBufferOutputStream extends OutputStream {
     }
 
     /**
-     * Returns the written contents as typed arrays.
-     * Intended to be called after all writes are complete.
+     * Returns the written contents as typed arrays. Intended to be called after all writes are complete.
      */
     public List<Uint8Array> getBuffers() {
         List<Uint8Array> result = new ArrayList<>(buffers.size());
@@ -88,7 +87,7 @@ public class ByteBufferOutputStream extends OutputStream {
             }
             result.add(asUint8Array(buffer));
         }
-        return Collections.unmodifiableList(result);
+        return result;
     }
 
     private Uint8Array asUint8Array(ByteBuffer buffer) {
