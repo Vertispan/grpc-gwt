@@ -108,12 +108,13 @@ Add `com.vertispan.grpc:grpc-web-gwt-fetch` to your project dependencies. Then, 
 
 Releases:
 
-| grpc-web-gwt-fetch | Description                                                       |
-|--------------------|-------------------------------------------------------------------|
-| 1.0.0              | Initial release                                                   |
-| 1.0.1              | Add support for Context cancellation                              |
-| 1.1.0              | Update to elemental2-dom 1.3.2                                    |
-| 1.2.0              | Fix a buffer copy issue, support alternate transports more easily |
+| grpc-web-gwt-fetch | Description                                                                    |
+|--------------------|--------------------------------------------------------------------------------|
+| 1.0.0              | Initial release                                                                |
+| 1.0.1              | Add support for Context cancellation                                           |
+| 1.1.0              | Update to elemental2-dom 1.3.2                                                 |
+| 1.2.0              | Fix a buffer copy issue, support alternate transports more easily              |
+| 1.3.0              | Support KnownLength, buffer data when framing messages, improve network errors |
 
 ## Building
 
