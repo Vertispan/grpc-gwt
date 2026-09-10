@@ -153,7 +153,10 @@ public abstract class AbstractGrpcWebChannel extends Channel {
                 if (status == 0) {
                     // Connectivity issue - headers are garbage, just fail. Dev tools logs may have more details,
                     // such as a CORS/cert issue
-                    responseListener.onClose(Status.INTERNAL.withDescription("Request failed, status 0"), new Metadata());
+                    this.closed = true;
+                    this.httpStatus = 0;
+                    this.headers = new Metadata();
+                    responseListener.onClose(Status.INTERNAL.withDescription("Request failed, status 0"), this.headers);
                     return;
                 }
                 this.httpStatus = status;
@@ -219,9 +222,8 @@ public abstract class AbstractGrpcWebChannel extends Channel {
                 requestHeaders.set("content-type", "application/grpc-web+proto");
                 requestHeaders.set("x-grpc-web", "1");
 
-                transport.start(requestHeaders);
-
                 this.responseListener = responseListener;
+                transport.start(requestHeaders);
             }
 
             @Override
