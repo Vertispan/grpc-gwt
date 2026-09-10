@@ -115,6 +115,7 @@ Releases:
 | 1.1.0              | Update to elemental2-dom 1.3.2                                                 |
 | 1.2.0              | Fix a buffer copy issue, support alternate transports more easily              |
 | 1.3.0              | Support KnownLength, buffer data when framing messages, improve network errors |
+| 1.4.0              | Improve handling synchronous network errors                                    |
 
 ## Building
 
